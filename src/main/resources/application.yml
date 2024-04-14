@@ -1,0 +1,13 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+    password: toor
+    url: jdbc:oracle:thin:@localhost:1521:XE
+    username: DICAROBANK
+  jpa:
+    database: oracle
+    database-platform: org.hibernate.dialect.OracleDialect
+    hibernate:
+      ddl-auto: update
