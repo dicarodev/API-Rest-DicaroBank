@@ -6,14 +6,12 @@ import org.springframework.http.HttpStatusCode;
 
 import java.time.LocalDateTime;
 
-/*
+/**
  * ApiError model to return an error to the client with the status code and message.
  */
-@Setter
-@Getter
+@Setter @Getter
 @RequiredArgsConstructor
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor @AllArgsConstructor
 @Builder
 public class ApiError {
 

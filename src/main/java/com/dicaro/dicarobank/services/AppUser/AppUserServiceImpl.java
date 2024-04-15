@@ -1,8 +1,7 @@
 package com.dicaro.dicarobank.services.AppUser;
 
-import com.dicaro.dicarobank.dto.SingUpAppUserDto;
+import com.dicaro.dicarobank.dto.SingInAppUserDto;
 import com.dicaro.dicarobank.model.AppUser;
-import com.dicaro.dicarobank.model.AppUserAdapter;
 import com.dicaro.dicarobank.model.AppUserAuthorization;
 import com.dicaro.dicarobank.repository.AppUserRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,9 +13,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Service for AppUser
+ */
 @Service
 @RequiredArgsConstructor
 public class AppUserServiceImpl implements AppUserService {
@@ -24,8 +25,9 @@ public class AppUserServiceImpl implements AppUserService {
     private final AppUserRepository repository;
     private final PasswordEncoder passwordEncoder;
 
-    /*
+    /**
      * Method to find an app user by its dni in the database and return it.
+     * @return Optional<AppUser>
      */
     @Override
     public Optional<AppUser> findAppUserByDni(String dni) {
@@ -36,19 +38,21 @@ public class AppUserServiceImpl implements AppUserService {
         }
     }
 
-    /*
-     * Method to create a new app user by passing a SingUpAppUserDto model in the database and return it.
+    /**
+     * Method to create a new app user by passing a SingInAppUserDto model in the database and return it.
+     * @param singInAppUserDto
+     * @return AppUser
      */
     @Override
-    public AppUser singUpAppUser(SingUpAppUserDto singUpAppUserDto) {
+    public AppUser singUpAppUser(SingInAppUserDto singInAppUserDto) {
         AppUser appUser = AppUser.builder()
-                .dni(singUpAppUserDto.getDni())
-                .name(singUpAppUserDto.getName())
-                .surname(singUpAppUserDto.getSurname())
-                .phone(singUpAppUserDto.getPhone())
-                .email(singUpAppUserDto.getEmail())
-                .password(passwordEncoder.encode(singUpAppUserDto.getPassword()))
-                .authorities(Stream.of(AppUserAuthorization.USER).collect(Collectors.toSet()))
+                .dni(singInAppUserDto.getDni())
+                .name(singInAppUserDto.getName())
+                .surname(singInAppUserDto.getSurname())
+                .phone(singInAppUserDto.getPhone())
+                .email(singInAppUserDto.getEmail())
+                .password(passwordEncoder.encode(singInAppUserDto.getPassword()))
+                .authorities(Stream.of(AppUserAuthorization.USER).toList())
                 .build();
 
         // Return the app user created or throw an exception if the app user already exists.
@@ -59,15 +63,15 @@ public class AppUserServiceImpl implements AppUserService {
         }
     }
 
-    /*
+    /**
      * Method to delete an app user by its dni in the database when the user is authenticated.
      */
     @Override
-    public void deleteAppUser(AppUserAdapter appUserAdapter) {
-        Optional<AppUser> user = repository.findAppUserByDni(appUserAdapter.getUsername());
+    public void deleteAppUser(AppUser appUser) {
+        Optional<AppUser> user = repository.findAppUserByDni(appUser.getUsername());
 
         try {
-            if (user.isPresent() && user.get().getDni().equals(appUserAdapter.getUsername())) {
+            if (user.isPresent() && user.get().getDni().equals(appUser.getUsername())) {
                 repository.delete(user.get());
             }
         } catch (UsernameNotFoundException ex) {

@@ -6,6 +6,9 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Model for account
+ */
 @Entity
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor

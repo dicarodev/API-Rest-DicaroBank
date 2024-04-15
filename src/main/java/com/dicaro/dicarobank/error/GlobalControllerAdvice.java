@@ -10,8 +10,14 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @RestControllerAdvice
 public class GlobalControllerAdvice extends ResponseEntityExceptionHandler {
 
-    /*
+    /**
      * Method to handle exceptions in the controller layer and return an error response to the client with the status code.
+     * @param ex the exception to handle
+     * @param body the body to use for the response
+     * @param headers the headers to use for the response
+     * @param statusCode the status code to use for the response
+     * @param request the current request
+     * @return the error response
      */
     @Override
     protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers,

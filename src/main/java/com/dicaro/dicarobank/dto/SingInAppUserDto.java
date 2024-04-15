@@ -2,10 +2,13 @@ package com.dicaro.dicarobank.dto;
 
 import lombok.*;
 
+/**
+ * DTO for SingUpAppUser
+ */
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
 @Builder
-public class SingUpAppUserDto {
+public class SingInAppUserDto {
     private String dni;
     private String name;
     private String surname;

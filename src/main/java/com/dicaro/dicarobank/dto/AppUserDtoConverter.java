@@ -2,24 +2,25 @@ package com.dicaro.dicarobank.dto;
 
 import com.dicaro.dicarobank.model.AppUser;
 import com.dicaro.dicarobank.model.AppUserAuthorization;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
-import java.util.stream.Collectors;
-
-/*
-* Convert AppUser to AppUserDto
-*/
+/**
+ * AppUserDtoConverter
+ */
 @Component
 public class AppUserDtoConverter {
 
-    // Convert AppUser to GetAppUserDto (only name and authorities) for response body
-    public GetAppUserDto convertAppUserEntityToGetAppUserDto(AppUser appUser){
-        return GetAppUserDto.builder()
-                .name(appUser.getName())
+    /**
+     * Convert AppUser to LogInResponseDto (only name and authorities) for response body
+     * @param appUser
+     * @return LogInResponseDto
+     */
+    public LogInResponseDto convertAppUserEntityToLogInResponseDto(AppUser appUser){
+        return LogInResponseDto.builder()
+                .dni(appUser.getDni())
                 .authorities(appUser.getAuthorities().stream()
-                        .map(AppUserAuthorization::name)
-                        .collect(Collectors.toSet()))
+                        .map(GrantedAuthority::getAuthority).toList())
                 .build();
     }
 }

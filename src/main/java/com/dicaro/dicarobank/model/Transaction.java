@@ -6,6 +6,9 @@ import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDate;
 
+/**
+ * Model for transaction
+ */
 @Entity
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
