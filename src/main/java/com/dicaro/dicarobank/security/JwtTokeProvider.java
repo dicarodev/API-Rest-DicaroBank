@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -44,6 +45,7 @@ public class JwtTokeProvider {
                 .expiration(new Date(System.currentTimeMillis() + (jwtDurationSeconds * 1000)))
                 .claim("dni", user.getDni())
                 .claim("email", user.getEmail())
+                .claim("authorities", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList())
                 .compact();
 
     }

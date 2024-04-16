@@ -67,11 +67,11 @@ public class AppUserServiceImpl implements AppUserService {
      * Method to delete an app user by its dni in the database when the user is authenticated.
      */
     @Override
-    public void deleteAppUser(AppUser appUser) {
-        Optional<AppUser> user = repository.findAppUserByDni(appUser.getUsername());
+    public void deleteAppUser(String dniAppUserAuth) {
+        Optional<AppUser> user = repository.findAppUserByDni(dniAppUserAuth);
 
         try {
-            if (user.isPresent() && user.get().getDni().equals(appUser.getUsername())) {
+            if (user.isPresent() && user.get().getDni().equals(dniAppUserAuth)) {
                 repository.delete(user.get());
             }
         } catch (UsernameNotFoundException ex) {
