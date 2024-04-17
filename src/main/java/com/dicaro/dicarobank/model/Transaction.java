@@ -1,10 +1,10 @@
 package com.dicaro.dicarobank.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * Model for transaction
@@ -19,8 +19,9 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @CreatedDate
-    private LocalDate transactionDate;
+    @Builder.Default
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy hh:mm:ss")
+    private LocalDateTime transactionDate = LocalDateTime.now();
 
     private double amount;
     private String detail;

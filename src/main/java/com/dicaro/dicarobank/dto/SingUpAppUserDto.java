@@ -8,7 +8,7 @@ import lombok.*;
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
 @Builder
-public class SingInAppUserDto {
+public class SingUpAppUserDto {
     private String dni;
     private String name;
     private String surname;

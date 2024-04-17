@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Model for account
@@ -19,11 +20,12 @@ public class Account {
     private long id;
 
     @Column(unique = true)
-    private int accountNumber;
+    @Builder.Default
+    private int accountNumber = new Random().nextInt(100000000, 999999999);
 
     private double balance;
 
-    @ManyToOne()
+    @OneToOne()
     private AppUser appUser;
 
     @OneToMany(mappedBy = "originAccount")

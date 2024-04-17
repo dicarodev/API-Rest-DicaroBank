@@ -1,6 +1,7 @@
 package com.dicaro.dicarobank.services.AppUser;
 
-import com.dicaro.dicarobank.dto.SingInAppUserDto;
+import com.dicaro.dicarobank.dto.SingUpAppUserDto;
+import com.dicaro.dicarobank.model.Account;
 import com.dicaro.dicarobank.model.AppUser;
 
 import java.util.Optional;
@@ -10,6 +11,6 @@ import java.util.Optional;
  */
 public interface AppUserService {
     Optional<AppUser> findAppUserByDni(String dni);
-    AppUser singUpAppUser(SingInAppUserDto singInAppUserDto);
+    AppUser singUpAppUser(SingUpAppUserDto singUpAppUserDto);
     void deleteAppUser(String appUserDniAuth);
 }

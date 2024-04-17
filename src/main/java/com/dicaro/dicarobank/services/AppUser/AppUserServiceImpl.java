@@ -1,6 +1,6 @@
 package com.dicaro.dicarobank.services.AppUser;
 
-import com.dicaro.dicarobank.dto.SingInAppUserDto;
+import com.dicaro.dicarobank.dto.SingUpAppUserDto;
 import com.dicaro.dicarobank.model.AppUser;
 import com.dicaro.dicarobank.model.AppUserAuthorization;
 import com.dicaro.dicarobank.repository.AppUserRepository;
@@ -39,19 +39,19 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     /**
-     * Method to create a new app user by passing a SingInAppUserDto model in the database and return it.
-     * @param singInAppUserDto
+     * Method to create a new app user by passing a SingUpAppUserDto model in the database and return it.
+     * @param singUpAppUserDto
      * @return AppUser
      */
     @Override
-    public AppUser singUpAppUser(SingInAppUserDto singInAppUserDto) {
+    public AppUser singUpAppUser(SingUpAppUserDto singUpAppUserDto) {
         AppUser appUser = AppUser.builder()
-                .dni(singInAppUserDto.getDni())
-                .name(singInAppUserDto.getName())
-                .surname(singInAppUserDto.getSurname())
-                .phone(singInAppUserDto.getPhone())
-                .email(singInAppUserDto.getEmail())
-                .password(passwordEncoder.encode(singInAppUserDto.getPassword()))
+                .dni(singUpAppUserDto.getDni())
+                .name(singUpAppUserDto.getName())
+                .surname(singUpAppUserDto.getSurname())
+                .phone(singUpAppUserDto.getPhone())
+                .email(singUpAppUserDto.getEmail())
+                .password(passwordEncoder.encode(singUpAppUserDto.getPassword()))
                 .authorities(Stream.of(AppUserAuthorization.USER).toList())
                 .build();
 

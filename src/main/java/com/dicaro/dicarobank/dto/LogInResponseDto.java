@@ -3,7 +3,6 @@ package com.dicaro.dicarobank.dto;
 import lombok.*;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * DTO for LogInResponse

@@ -34,10 +34,4 @@ public class AppUserController {
         appUserServiceImpl.deleteAppUser(dniAppUserAuth);
         return ResponseEntity.ok().body("Usuario eliminado con éxito");
     }
-
-    @GetMapping("/hello")
-    public String hello(){
-        return "hello world";
-    }
-
 }

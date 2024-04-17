@@ -46,8 +46,8 @@ public class AppUser implements UserDetails {
     @Enumerated(EnumType.STRING)
     private List<AppUserAuthorization> authorities;
 
-    @OneToMany(mappedBy = "appUser", fetch = FetchType.EAGER)
-    private List<Account> accountList = new ArrayList<>();
+    @OneToOne(mappedBy = "appUser")
+    private Account account;
 
     /**
      * Method to get the roles of an app user
