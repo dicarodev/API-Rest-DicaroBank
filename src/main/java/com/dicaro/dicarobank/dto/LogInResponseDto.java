@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor @AllArgsConstructor
 @Builder
 public class LogInResponseDto {
-    private String dni;
+    private String name;
     private List<String> authorities;
     private String token;
 }

@@ -1,5 +1,6 @@
 package com.dicaro.dicarobank.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
@@ -27,8 +28,10 @@ public class Transaction {
     private String detail;
 
     @ManyToOne()
+    @JsonBackReference
     private Account originAccount;
 
     @ManyToOne()
+    @JsonBackReference
     private Account destinyAccount;
 }

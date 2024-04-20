@@ -1,4 +1,4 @@
-package com.dicaro.dicarobank.services.AppUser;
+package com.dicaro.dicarobank.services.appUser;
 
 import com.dicaro.dicarobank.dto.SingUpAppUserDto;
 import com.dicaro.dicarobank.model.AppUser;
@@ -16,18 +16,18 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
- * Service for AppUser
+ * Service for appUser
  */
 @Service
 @RequiredArgsConstructor
-public class AppUserServiceImpl implements AppUserService {
+public class AppUserServiceImpl implements AppUserService{
 
     private final AppUserRepository repository;
     private final PasswordEncoder passwordEncoder;
 
     /**
      * Method to find an app user by its dni in the database and return it.
-     * @return Optional<AppUser>
+     * @return Optional<appUser>
      */
     @Override
     public Optional<AppUser> findAppUserByDni(String dni) {
@@ -40,8 +40,8 @@ public class AppUserServiceImpl implements AppUserService {
 
     /**
      * Method to create a new app user by passing a SingUpAppUserDto model in the database and return it.
-     * @param singUpAppUserDto
-     * @return AppUser
+     * @param singUpAppUserDto the singed up app user
+     * @return appUser
      */
     @Override
     public AppUser singUpAppUser(SingUpAppUserDto singUpAppUserDto) {

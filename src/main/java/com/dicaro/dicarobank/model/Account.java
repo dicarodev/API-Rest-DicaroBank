@@ -1,5 +1,6 @@
 package com.dicaro.dicarobank.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,7 +22,7 @@ public class Account {
 
     @Column(unique = true)
     @Builder.Default
-    private int accountNumber = new Random().nextInt(100000000, 999999999);
+    private String accountNumber = String.format("ES%014d", new Random().nextLong(Math.abs(System.currentTimeMillis())));
 
     private double balance;
 
@@ -29,8 +30,10 @@ public class Account {
     private AppUser appUser;
 
     @OneToMany(mappedBy = "originAccount")
+    @JsonManagedReference
     private List<Transaction> originTransactionsList = new ArrayList<>();
 
     @OneToMany(mappedBy = "destinyAccount")
+    @JsonManagedReference
     private List<Transaction> destinyTransactionsList = new ArrayList<>();
 }

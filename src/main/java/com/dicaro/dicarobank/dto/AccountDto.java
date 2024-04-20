@@ -1,9 +1,6 @@
 package com.dicaro.dicarobank.dto;
 
-import com.dicaro.dicarobank.model.Transaction;
 import lombok.*;
-
-import java.util.List;
 
 @Getter
 @Setter
@@ -13,6 +10,6 @@ import java.util.List;
 public class AccountDto {
 
     private Long id;
-    private int accountNumber;
+    private String accountNumber;
     private double balance;
 }

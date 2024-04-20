@@ -2,11 +2,13 @@ package com.dicaro.dicarobank.repository;
 
 import com.dicaro.dicarobank.model.Transaction;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Repository for transactions
  */
-@Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
+    Optional<List<Transaction>> findTransactionsByOriginAccountIdOrderByTransactionDate(Long id);
 }

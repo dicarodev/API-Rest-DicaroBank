@@ -77,37 +77,32 @@ public class DicaroBankApp implements CommandLineRunner {
                 .build();
         appUserRepository.save(user5);
 
-        // Creación de Account para user1
+        // Creación de account para user1
         Account account1 = new Account();
-        account1.setAccountNumber(123456); // Número de cuenta aleatorio
         account1.setBalance(0); // Saldo inicial
         account1.setAppUser(user1);
         accountRepository.save(account1);
 
-        // Creación de Account para user2
+        // Creación de account para user2
         Account account2 = new Account();
-        account2.setAccountNumber(234567); // Número de cuenta aleatorio
         account2.setBalance(0); // Saldo inicial
         account2.setAppUser(user2);
         accountRepository.save(account2);
 
-        // Creación de Account para user3
+        // Creación de account para user3
         Account account3 = new Account();
-        account3.setAccountNumber(345678); // Número de cuenta aleatorio
         account3.setBalance(0); // Saldo inicial
         account3.setAppUser(user3);
         accountRepository.save(account3);
 
-        // Creación de Account para user4
+        // Creación de account para user4
         Account account4 = new Account();
-        account4.setAccountNumber(456789); // Número de cuenta aleatorio
         account4.setBalance(0); // Saldo inicial
         account4.setAppUser(user4);
         accountRepository.save(account4);
 
-        // Creación de Account para user5
+        // Creación de account para user5
         Account account5 = new Account();
-        account5.setAccountNumber(567890); // Número de cuenta aleatorio
         account5.setBalance(0); // Saldo inicial
         account5.setAppUser(user5);
         accountRepository.save(account5);
@@ -119,7 +114,7 @@ public class DicaroBankApp implements CommandLineRunner {
             transaction.setAmount(Math.floor(Math.random() * 10000)); // Monto aleatorio entre 0 y 500
             transaction.setDetail("Transaction " + i);
             transaction.setOriginAccount(account1);
-            transaction.setDestinyAccount(account1);
+            transaction.setDestinyAccount(account3);
             transactions1.add(transaction);
         }
         transactionRepository.saveAll(transactions1);
@@ -131,7 +126,7 @@ public class DicaroBankApp implements CommandLineRunner {
             transaction.setAmount(Math.floor(Math.random() * 10000)); // Monto aleatorio entre 0 y 500
             transaction.setDetail("Transaction " + i);
             transaction.setOriginAccount(account2);
-            transaction.setDestinyAccount(account2);
+            transaction.setDestinyAccount(account1);
             transactions2.add(transaction);
         }
         transactionRepository.saveAll(transactions2);
@@ -143,7 +138,7 @@ public class DicaroBankApp implements CommandLineRunner {
             transaction.setAmount(Math.floor(Math.random() * 10000)); // Monto aleatorio entre 0 y 500
             transaction.setDetail("Transaction " + i);
             transaction.setOriginAccount(account3);
-            transaction.setDestinyAccount(account3);
+            transaction.setDestinyAccount(account2);
             transactions3.add(transaction);
         }
         transactionRepository.saveAll(transactions3);
@@ -155,7 +150,7 @@ public class DicaroBankApp implements CommandLineRunner {
             transaction.setAmount(Math.floor(Math.random() * 10000)); // Monto aleatorio entre 0 y 500
             transaction.setDetail("Transaction " + i);
             transaction.setOriginAccount(account4);
-            transaction.setDestinyAccount(account4);
+            transaction.setDestinyAccount(account1);
             transactions4.add(transaction);
         }
         transactionRepository.saveAll(transactions4);
@@ -167,7 +162,7 @@ public class DicaroBankApp implements CommandLineRunner {
             transaction.setAmount(Math.floor(Math.random() * 10000)); // Monto aleatorio entre 0 y 500
             transaction.setDetail("Transaction " + i);
             transaction.setOriginAccount(account5);
-            transaction.setDestinyAccount(account5);
+            transaction.setDestinyAccount(account4);
             transactions5.add(transaction);
         }
         transactionRepository.saveAll(transactions5);*/

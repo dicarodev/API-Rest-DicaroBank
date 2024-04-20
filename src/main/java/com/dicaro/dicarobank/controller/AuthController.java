@@ -1,13 +1,13 @@
 package com.dicaro.dicarobank.controller;
 
-import com.dicaro.dicarobank.dto.AppUserDtoConverter;
+import com.dicaro.dicarobank.dto.AppUserConverter;
 import com.dicaro.dicarobank.dto.LogInRequestDto;
 import com.dicaro.dicarobank.dto.LogInResponseDto;
 import com.dicaro.dicarobank.dto.SingUpAppUserDto;
 import com.dicaro.dicarobank.model.AppUser;
 import com.dicaro.dicarobank.security.JwtTokeProvider;
-import com.dicaro.dicarobank.services.Account.AccountServiceImpl;
-import com.dicaro.dicarobank.services.AppUser.AppUserServiceImpl;
+import com.dicaro.dicarobank.services.account.AccountServiceImpl;
+import com.dicaro.dicarobank.services.appUser.AppUserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +32,7 @@ public class AuthController {
     private final AccountServiceImpl accountService;
     private final AuthenticationManager authManager;
     private final JwtTokeProvider jwtTokeProvider;
-    private final AppUserDtoConverter appUserDtoConverter;
+    private final AppUserConverter appUserConverter;
 
     /**
      * Controller to sign up an app user and return it as a LogInResponseDto model to the client.
@@ -43,6 +43,7 @@ public class AuthController {
     @PostMapping("/singup")
     public ResponseEntity<?> singUpAppUser(@RequestBody SingUpAppUserDto singUpAppUserDto) {
         AppUser appUser = appUserServiceImpl.singUpAppUser(singUpAppUserDto);
+
         if (appUser != null) {
             accountService.createNewAccount(appUser);
             return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -66,7 +67,7 @@ public class AuthController {
         String token = jwtTokeProvider.generateToken(authentication);
 
         return new LogInResponseDto(
-                appUser.getUsername(),
+                appUser.getName(),
                 appUser.getAuthorities().stream()
                         .map(GrantedAuthority::getAuthority).toList(),
                 token);

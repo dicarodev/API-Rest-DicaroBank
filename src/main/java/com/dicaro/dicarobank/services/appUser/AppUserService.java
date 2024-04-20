@@ -1,7 +1,6 @@
-package com.dicaro.dicarobank.services.AppUser;
+package com.dicaro.dicarobank.services.appUser;
 
 import com.dicaro.dicarobank.dto.SingUpAppUserDto;
-import com.dicaro.dicarobank.model.Account;
 import com.dicaro.dicarobank.model.AppUser;
 
 import java.util.Optional;

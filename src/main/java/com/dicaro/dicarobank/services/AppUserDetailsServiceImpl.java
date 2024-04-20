@@ -1,6 +1,6 @@
 package com.dicaro.dicarobank.services;
 
-import com.dicaro.dicarobank.services.AppUser.AppUserServiceImpl;
+import com.dicaro.dicarobank.services.appUser.AppUserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

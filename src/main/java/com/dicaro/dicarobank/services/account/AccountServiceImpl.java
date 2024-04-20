@@ -1,4 +1,4 @@
-package com.dicaro.dicarobank.services.Account;
+package com.dicaro.dicarobank.services.account;
 
 import com.dicaro.dicarobank.model.Account;
 import com.dicaro.dicarobank.model.AppUser;
@@ -29,7 +29,7 @@ public class AccountServiceImpl implements AccountService{
         }
     }
     @Override
-    public Optional<Account> findAccountById(Long id) {
-        return accountRepository.findAccountByAppUser_Id(id);
+    public Optional<Account> findAccountByAppUserId(Long appUserId) {
+        return accountRepository.findAccountByAppUser_Id(appUserId);
     }
 }
