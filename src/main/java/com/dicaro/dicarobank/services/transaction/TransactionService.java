@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface TransactionService {
 
-    Optional<List<Transaction>> getOriginTransactionsByAccountId(Long id);
+    Optional<List<Transaction>> getTransactionsByAccountId(Long id);
 }

@@ -1,5 +1,7 @@
 package com.dicaro.dicarobank.controller;
 
+import com.dicaro.dicarobank.dto.TransactionConverter;
+import com.dicaro.dicarobank.dto.TransactionDto;
 import com.dicaro.dicarobank.model.Account;
 import com.dicaro.dicarobank.model.AppUser;
 import com.dicaro.dicarobank.model.Transaction;
@@ -14,7 +16,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -24,19 +28,26 @@ public class TransactionController {
     private final TransactionServiceImpl transactionServiceImpl;
     private final AppUserServiceImpl appUserServiceImpl;
     private final AccountServiceImpl accountServiceImpl;
+    private final TransactionConverter transactionConverter;
 
     @GetMapping("/user/account")
-    public ResponseEntity<?> getAllOriginTransactionsAuthUser(@AuthenticationPrincipal String appUserDni) {
+    public ResponseEntity<?> getAllTransactionsAuthUser(@AuthenticationPrincipal String appUserDni) {
 
         Optional<AppUser> appUser = appUserServiceImpl.findAppUserByDni(appUserDni);
 
-        Optional<Account> account = accountServiceImpl.findAccountByAppUserId(
-                appUser.isPresent() ? appUser.get().getId() : null);
+        Optional<Account> account = accountServiceImpl.findAccountByAppUserId(appUser.isPresent() ? appUser.get().getId() : null);
 
-        Optional<List<Transaction>> originTransactions = transactionServiceImpl.getOriginTransactionsByAccountId(
-                account.isPresent() ? account.get().getId() : null);
+        Optional<List<Transaction>> transactions = transactionServiceImpl.getTransactionsByAccountId(account.isPresent() ? account.get().getId() : null);
+
+        List<Transaction> transactionList = transactions.orElse(null);
+        List<TransactionDto> transactionDtoList = new ArrayList<>();
+
+        for (int i = 0; i < Objects.requireNonNull(transactionList).size(); i++) {
+            transactionDtoList.add(transactionConverter.convertTransactionEntityToTransactionDto(transactionList.get(i)));
+        }
+
 
         return ResponseEntity.status(HttpStatus.OK).body(
-                originTransactions.isPresent() ? originTransactions.get() : ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+                !transactionDtoList.isEmpty() ? transactionDtoList : ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 }

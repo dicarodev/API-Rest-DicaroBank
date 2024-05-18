@@ -1,5 +1,8 @@
 package com.dicaro.dicarobank;
 
+import com.dicaro.dicarobank.model.Account;
+import com.dicaro.dicarobank.model.AppUser;
+import com.dicaro.dicarobank.model.Transaction;
 import com.dicaro.dicarobank.repository.AccountRepository;
 import com.dicaro.dicarobank.repository.AppUserRepository;
 import com.dicaro.dicarobank.repository.TransactionRepository;
@@ -9,6 +12,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootApplication
 @EnableJpaAuditing
@@ -26,9 +32,9 @@ public class DicaroBankApp implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        // Generate 5 AppUsers
-        /*AppUser user1 = AppUser.builder()
-                .dni("12345678")
+        /*// Generate 5 AppUsers
+        AppUser user1 = AppUser.builder()
+                .dni("12345678A")
                 .name("Juan")
                 .surname("Pérez")
                 .phone("98765432")
@@ -38,7 +44,7 @@ public class DicaroBankApp implements CommandLineRunner {
         appUserRepository.save(user1);
 
         AppUser user2 = AppUser.builder()
-                .dni("87654321")
+                .dni("98765432B")
                 .name("María")
                 .surname("García")
                 .phone("65432198")
@@ -48,7 +54,7 @@ public class DicaroBankApp implements CommandLineRunner {
         appUserRepository.save(user2);
 
         AppUser user3 = AppUser.builder()
-                .dni("13579246")
+                .dni("45678901C")
                 .name("Pedro")
                 .surname("López")
                 .phone("36985214")
@@ -58,7 +64,7 @@ public class DicaroBankApp implements CommandLineRunner {
         appUserRepository.save(user3);
 
         AppUser user4 = AppUser.builder()
-                .dni("24681357")
+                .dni("21098765D")
                 .name("Ana")
                 .surname("Rodríguez")
                 .phone("25814736")
@@ -68,7 +74,7 @@ public class DicaroBankApp implements CommandLineRunner {
         appUserRepository.save(user4);
 
         AppUser user5 = AppUser.builder()
-                .dni("98765432")
+                .dni("54321098E")
                 .name("Laura")
                 .surname("Martínez")
                 .phone("14725836")
@@ -165,7 +171,7 @@ public class DicaroBankApp implements CommandLineRunner {
             transaction.setDestinyAccount(account4);
             transactions5.add(transaction);
         }
-        transactionRepository.saveAll(transactions5);*/
-
+        transactionRepository.saveAll(transactions5);
+*/
     }
 }
