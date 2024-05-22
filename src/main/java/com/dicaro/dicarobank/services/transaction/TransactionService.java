@@ -7,5 +7,6 @@ import java.util.Optional;
 
 public interface TransactionService {
 
-    Optional<List<Transaction>> getTransactionsByAccountId(Long id);
+    Optional<List<Transaction>> getOutgoingTransactionsByAccountId(Long id);
+    Optional<List<Transaction>> getIncomingTransactionsByAccountId(Long id);
 }

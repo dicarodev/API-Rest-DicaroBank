@@ -21,7 +21,7 @@ public class Transaction {
     private long id;
 
     @Builder.Default
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy hh:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss")
     private LocalDateTime transactionDate = LocalDateTime.now();
 
     private double amount;

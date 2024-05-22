@@ -30,24 +30,45 @@ public class TransactionController {
     private final AccountServiceImpl accountServiceImpl;
     private final TransactionConverter transactionConverter;
 
-    @GetMapping("/user/account")
-    public ResponseEntity<?> getAllTransactionsAuthUser(@AuthenticationPrincipal String appUserDni) {
+    @GetMapping("/user/account/outgoing")
+    public ResponseEntity<?> getOutgoingTransactionsAuthUser(@AuthenticationPrincipal String appUserDni) {
 
         Optional<AppUser> appUser = appUserServiceImpl.findAppUserByDni(appUserDni);
 
         Optional<Account> account = accountServiceImpl.findAccountByAppUserId(appUser.isPresent() ? appUser.get().getId() : null);
 
-        Optional<List<Transaction>> transactions = transactionServiceImpl.getTransactionsByAccountId(account.isPresent() ? account.get().getId() : null);
+        Optional<List<Transaction>> transactions = transactionServiceImpl.getOutgoingTransactionsByAccountId(account.isPresent() ? account.get().getId() : null);
 
-        List<Transaction> transactionList = transactions.orElse(null);
-        List<TransactionDto> transactionDtoList = new ArrayList<>();
+        List<Transaction> outgoingTransactionList = transactions.orElse(null);
+        List<TransactionDto> outgoingtransactionDtoList = new ArrayList<>();
 
-        for (int i = 0; i < Objects.requireNonNull(transactionList).size(); i++) {
-            transactionDtoList.add(transactionConverter.convertTransactionEntityToTransactionDto(transactionList.get(i)));
+        for (int i = 0; i < Objects.requireNonNull(outgoingTransactionList).size(); i++) {
+            outgoingtransactionDtoList.add(transactionConverter.convertTransactionEntityToTransactionDto(outgoingTransactionList.get(i)));
         }
 
 
         return ResponseEntity.status(HttpStatus.OK).body(
-                !transactionDtoList.isEmpty() ? transactionDtoList : ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+                !outgoingtransactionDtoList.isEmpty() ? outgoingtransactionDtoList : ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
+
+    @GetMapping("/user/account/incoming")
+    public ResponseEntity<?> getIncomingTransactionsAuthUser(@AuthenticationPrincipal String appUserDni) {
+
+        Optional<AppUser> appUser = appUserServiceImpl.findAppUserByDni(appUserDni);
+
+        Optional<Account> account = accountServiceImpl.findAccountByAppUserId(appUser.isPresent() ? appUser.get().getId() : null);
+
+        Optional<List<Transaction>> transactions = transactionServiceImpl.getIncomingTransactionsByAccountId(account.isPresent() ? account.get().getId() : null);
+
+        List<Transaction> incomingtransactionList = transactions.orElse(null);
+        List<TransactionDto> incomingTransactionDtoList = new ArrayList<>();
+
+        for (int i = 0; i < Objects.requireNonNull(incomingtransactionList).size(); i++) {
+            incomingTransactionDtoList.add(transactionConverter.convertTransactionEntityToTransactionDto(incomingtransactionList.get(i)));
+        }
+
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                !incomingTransactionDtoList.isEmpty() ? incomingTransactionDtoList : ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 }

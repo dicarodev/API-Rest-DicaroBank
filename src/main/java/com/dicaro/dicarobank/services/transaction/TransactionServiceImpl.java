@@ -14,9 +14,12 @@ public class TransactionServiceImpl implements TransactionService {
 
     private final TransactionRepository transactionRepository;
     @Override
-    public Optional<List<Transaction>> getTransactionsByAccountId(Long id) {
-        //Mirar para recuperar solo los datos necesario(hacer stream y map y filter o ver como, devuelve muchos datos)
-
+    public Optional<List<Transaction>> getOutgoingTransactionsByAccountId(Long id) {
         return transactionRepository.findTransactionsByOriginAccountIdOrderByTransactionDate(id);
+    }
+
+    @Override
+    public Optional<List<Transaction>> getIncomingTransactionsByAccountId(Long id) {
+        return transactionRepository.findTransactionsByDestinyAccountIdOrderByTransactionDate(id);
     }
 }

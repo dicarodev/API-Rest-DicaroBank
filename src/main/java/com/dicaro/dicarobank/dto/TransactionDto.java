@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Builder
 public class TransactionDto {
     private Long id;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy hh:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss")
     private LocalDateTime transactionDate;
     private double amount;
     private String detail;
