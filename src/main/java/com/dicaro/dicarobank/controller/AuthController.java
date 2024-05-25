@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AppUserServiceImpl appUserServiceImpl;
-    private final AccountServiceImpl accountService;
+    private final AccountServiceImpl accountServiceImpl;
     private final AuthenticationManager authManager;
     private final JwtTokeProvider jwtTokeProvider;
     private final AppUserConverter appUserConverter;
@@ -45,7 +45,7 @@ public class AuthController {
         AppUser appUser = appUserServiceImpl.singUpAppUser(singUpAppUserDto);
 
         if (appUser != null) {
-            accountService.createNewAccount(appUser);
+            accountServiceImpl.createNewAccount(appUser);
             return ResponseEntity.status(HttpStatus.CREATED).build();
         }
 
@@ -72,5 +72,7 @@ public class AuthController {
                         .map(GrantedAuthority::getAuthority).toList(),
                 token);
     }
+
+    //Logout not implemented TODO
 
 }

@@ -1,5 +1,6 @@
 package com.dicaro.dicarobank.controller;
 
+import com.dicaro.dicarobank.dto.IssueTransactionDto;
 import com.dicaro.dicarobank.dto.TransactionConverter;
 import com.dicaro.dicarobank.dto.TransactionDto;
 import com.dicaro.dicarobank.model.Account;
@@ -12,9 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +29,7 @@ public class TransactionController {
     private final AccountServiceImpl accountServiceImpl;
     private final TransactionConverter transactionConverter;
 
-    @GetMapping("/user/account/outgoing")
+    @GetMapping("/outgoing")
     public ResponseEntity<?> getOutgoingTransactionsAuthUser(@AuthenticationPrincipal String appUserDni) {
 
         Optional<AppUser> appUser = appUserServiceImpl.findAppUserByDni(appUserDni);
@@ -51,7 +50,7 @@ public class TransactionController {
                 !outgoingtransactionDtoList.isEmpty() ? outgoingtransactionDtoList : ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    @GetMapping("/user/account/incoming")
+    @GetMapping("/incoming")
     public ResponseEntity<?> getIncomingTransactionsAuthUser(@AuthenticationPrincipal String appUserDni) {
 
         Optional<AppUser> appUser = appUserServiceImpl.findAppUserByDni(appUserDni);
@@ -70,5 +69,20 @@ public class TransactionController {
 
         return ResponseEntity.status(HttpStatus.OK).body(
                 !incomingTransactionDtoList.isEmpty() ? incomingTransactionDtoList : ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
+
+    @PostMapping("/issue")
+    public ResponseEntity<?> issueTransaction(@AuthenticationPrincipal String appUserDni, @RequestBody IssueTransactionDto issueTransactionDto) {
+
+        Optional<AppUser> appUser = appUserServiceImpl.findAppUserByDni(appUserDni);
+
+        if (appUser.isPresent()) {
+            Transaction transaction = transactionServiceImpl.issueTransaction(appUser.get(), issueTransactionDto);
+
+            if (transaction != null) {
+                return ResponseEntity.status(HttpStatus.CREATED).body("Transferencia realizada con éxito");
+            }
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se ha podido realizar la operación");
     }
 }

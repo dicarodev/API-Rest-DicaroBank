@@ -6,6 +6,7 @@ import com.dicaro.dicarobank.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -31,5 +32,14 @@ public class AccountServiceImpl implements AccountService{
     @Override
     public Optional<Account> findAccountByAppUserId(Long appUserId) {
         return accountRepository.findAccountByAppUser_Id(appUserId);
+    }
+
+    @Override
+    public Optional<Account> findAccountByAccountNumber(String accountNumber) {
+        try {
+            return accountRepository.findAccountByAccountNumber(accountNumber);
+        } catch (UsernameNotFoundException ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "La cuenta no existe");
+        }
     }
 }

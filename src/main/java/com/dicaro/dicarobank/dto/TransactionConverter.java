@@ -8,7 +8,6 @@ public class TransactionConverter {
 
     public TransactionDto convertTransactionEntityToTransactionDto(Transaction transaction){
         return TransactionDto.builder()
-                .id(transaction.getId())
                 .transactionDate(transaction.getTransactionDate())
                 .amount(transaction.getAmount())
                 .detail(transaction.getDetail())

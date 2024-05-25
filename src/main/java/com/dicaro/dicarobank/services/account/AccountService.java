@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface AccountService {
     void createNewAccount(AppUser appUser);
     Optional<Account> findAccountByAppUserId(Long id);
+    Optional<Account> findAccountByAccountNumber(String accountNumber);
 }
