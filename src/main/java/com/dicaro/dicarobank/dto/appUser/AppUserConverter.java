@@ -1,4 +1,4 @@
-package com.dicaro.dicarobank.dto;
+package com.dicaro.dicarobank.dto.appUser;
 
 import com.dicaro.dicarobank.model.AppUser;
 import org.springframework.security.core.GrantedAuthority;

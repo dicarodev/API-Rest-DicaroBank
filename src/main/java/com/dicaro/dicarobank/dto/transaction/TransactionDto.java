@@ -1,4 +1,4 @@
-package com.dicaro.dicarobank.dto;
+package com.dicaro.dicarobank.dto.transaction;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;

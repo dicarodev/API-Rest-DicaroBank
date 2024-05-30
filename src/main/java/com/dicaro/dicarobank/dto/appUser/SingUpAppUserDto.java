@@ -1,4 +1,4 @@
-package com.dicaro.dicarobank.dto;
+package com.dicaro.dicarobank.dto.appUser;
 
 import lombok.*;
 

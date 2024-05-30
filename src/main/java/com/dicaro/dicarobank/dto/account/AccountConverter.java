@@ -1,10 +1,10 @@
-package com.dicaro.dicarobank.dto;
+package com.dicaro.dicarobank.dto.account;
 
 import com.dicaro.dicarobank.model.Account;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AcoountConverter {
+public class AccountConverter {
 
     public AccountDto convertAccountEntityToAccountDto(Account account){
         return AccountDto.builder()

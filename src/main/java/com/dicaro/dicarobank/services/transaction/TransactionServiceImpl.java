@@ -1,33 +1,65 @@
 package com.dicaro.dicarobank.services.transaction;
 
-import com.dicaro.dicarobank.dto.IssueTransactionDto;
+import com.dicaro.dicarobank.dto.transaction.BizumDto;
+import com.dicaro.dicarobank.dto.transaction.IssueTransactionDto;
+import com.dicaro.dicarobank.dto.transaction.TransactionConverter;
+import com.dicaro.dicarobank.dto.transaction.TransactionDto;
 import com.dicaro.dicarobank.model.Account;
 import com.dicaro.dicarobank.model.AppUser;
 import com.dicaro.dicarobank.model.Transaction;
+import com.dicaro.dicarobank.repository.AccountRepository;
 import com.dicaro.dicarobank.repository.TransactionRepository;
 import com.dicaro.dicarobank.services.account.AccountServiceImpl;
+import com.dicaro.dicarobank.services.appUser.AppUserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class TransactionServiceImpl implements TransactionService {
 
-    private final TransactionRepository transactionRepository;
+    private final AppUserServiceImpl appUserServiceImpl;
+    private final AccountRepository accountRepository;
     private final AccountServiceImpl accountServiceImpl;
+    private final TransactionRepository transactionRepository;
+    private final TransactionConverter transactionConverter;
     @Override
-    public Optional<List<Transaction>> getOutgoingTransactionsByAccountId(Long id) {
-        return transactionRepository.findTransactionsByOriginAccountIdOrderByTransactionDate(id);
+    public List<TransactionDto> getOutgoingTransactionsByAccountId(String appUserDni) {
+        AppUser appUser = appUserServiceImpl.findAppUserByDni(appUserDni)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No se ha encontrado el usuario"));
+
+        Account account = accountServiceImpl.findAccountByAppUserId(appUser.getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No se ha encontrado la cuenta"));
+
+        List<Transaction> transactions = transactionRepository.findTransactionsByOriginAccountIdOrderByTransactionDate(account.getId())
+                .orElse(Collections.emptyList());
+
+        // Convert transaction to DTO
+        return transactions.stream()
+                .map(transactionConverter::convertTransactionEntityToTransactionDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Optional<List<Transaction>> getIncomingTransactionsByAccountId(Long id) {
-        return transactionRepository.findTransactionsByDestinyAccountIdOrderByTransactionDate(id);
+    public List<TransactionDto> getIncomingTransactionsByAccountId(String appUserDni) {
+        AppUser appUser = appUserServiceImpl.findAppUserByDni(appUserDni)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No se ha encontrado el usuario"));
+
+        Account account = accountServiceImpl.findAccountByAppUserId(appUser.getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No se ha encontrado la cuenta"));
+
+        List<Transaction> transactions = transactionRepository.findTransactionsByDestinyAccountIdOrderByTransactionDate(account.getId())
+                .orElse(Collections.emptyList());
+
+        // Convert transaction to DTO
+        return transactions.stream()
+                .map(transactionConverter::convertTransactionEntityToTransactionDto)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -48,7 +80,7 @@ public class TransactionServiceImpl implements TransactionService {
 
             // Check if the origin account has sufficient balance
             if (originAccount.getBalance() < amount) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No se puede realizar la operación, saldo insuficiente");
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Saldo insuficiente");
             }
 
             // Perform the transaction: update the account balances
@@ -65,6 +97,38 @@ public class TransactionServiceImpl implements TransactionService {
 
             // Save the transaction in the repository and return it
             return transactionRepository.save(transaction);
+        } else {
+            // Throw an exception if the accounts do not exist or the amount is invalid
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No se ha podido realizar la operación");
+        }
+    }
+
+    @Override
+    public void issueBizum(AppUser appUser, BizumDto bizumDto) {
+        // Retrieve the origin and destination accounts based on the account numbers in the DTO
+        Optional<Account> originAccountOpt = accountServiceImpl.findAccountByAppUserId(appUser.getId());
+
+        if (originAccountOpt.isPresent() && bizumDto.getAmount() > 0) {
+            Account originAccount = originAccountOpt.get();
+            double amount = bizumDto.getAmount();
+
+            // Check if the origin account has sufficient balance
+            if (originAccount.getBalance() < amount) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Saldo insuficiente");
+            }
+
+            // Perform the bizum transaction: update the account balance
+            originAccount.setBalance(originAccount.getBalance() - amount);
+
+            Transaction transaction = Transaction.builder()
+                    .amount(amount)
+                    .detail(bizumDto.getDetail())
+                    .originAccount(originAccount)
+                    .destinyAccount(null)
+                    .build();
+            // Update the account and save the transaction
+            //accountRepository.save(originAccount);
+            transactionRepository.save(transaction);
         } else {
             // Throw an exception if the accounts do not exist or the amount is invalid
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No se ha podido realizar la operación");

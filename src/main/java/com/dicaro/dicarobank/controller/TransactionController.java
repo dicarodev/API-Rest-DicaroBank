@@ -1,12 +1,10 @@
 package com.dicaro.dicarobank.controller;
 
-import com.dicaro.dicarobank.dto.IssueTransactionDto;
-import com.dicaro.dicarobank.dto.TransactionConverter;
-import com.dicaro.dicarobank.dto.TransactionDto;
-import com.dicaro.dicarobank.model.Account;
+import com.dicaro.dicarobank.dto.transaction.BizumDto;
+import com.dicaro.dicarobank.dto.transaction.IssueTransactionDto;
+import com.dicaro.dicarobank.dto.transaction.TransactionDto;
 import com.dicaro.dicarobank.model.AppUser;
 import com.dicaro.dicarobank.model.Transaction;
-import com.dicaro.dicarobank.services.account.AccountServiceImpl;
 import com.dicaro.dicarobank.services.appUser.AppUserServiceImpl;
 import com.dicaro.dicarobank.services.transaction.TransactionServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -15,9 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -26,52 +22,28 @@ import java.util.Optional;
 public class TransactionController {
     private final TransactionServiceImpl transactionServiceImpl;
     private final AppUserServiceImpl appUserServiceImpl;
-    private final AccountServiceImpl accountServiceImpl;
-    private final TransactionConverter transactionConverter;
 
     @GetMapping("/outgoing")
     public ResponseEntity<?> getOutgoingTransactionsAuthUser(@AuthenticationPrincipal String appUserDni) {
-
-        Optional<AppUser> appUser = appUserServiceImpl.findAppUserByDni(appUserDni);
-
-        Optional<Account> account = accountServiceImpl.findAccountByAppUserId(appUser.isPresent() ? appUser.get().getId() : null);
-
-        Optional<List<Transaction>> transactions = transactionServiceImpl.getOutgoingTransactionsByAccountId(account.isPresent() ? account.get().getId() : null);
-
-        List<Transaction> outgoingTransactionList = transactions.orElse(null);
-        List<TransactionDto> outgoingtransactionDtoList = new ArrayList<>();
-
-        for (int i = 0; i < Objects.requireNonNull(outgoingTransactionList).size(); i++) {
-            outgoingtransactionDtoList.add(transactionConverter.convertTransactionEntityToTransactionDto(outgoingTransactionList.get(i)));
+        try {
+            List<TransactionDto> outgoingtransactionDtoList = transactionServiceImpl.getOutgoingTransactionsByAccountId(appUserDni);
+            return ResponseEntity.ok(outgoingtransactionDtoList);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ha ocurrido un error inesperado: " + e.getMessage());
         }
-
-
-        return ResponseEntity.status(HttpStatus.OK).body(
-                !outgoingtransactionDtoList.isEmpty() ? outgoingtransactionDtoList : ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
     @GetMapping("/incoming")
     public ResponseEntity<?> getIncomingTransactionsAuthUser(@AuthenticationPrincipal String appUserDni) {
-
-        Optional<AppUser> appUser = appUserServiceImpl.findAppUserByDni(appUserDni);
-
-        Optional<Account> account = accountServiceImpl.findAccountByAppUserId(appUser.isPresent() ? appUser.get().getId() : null);
-
-        Optional<List<Transaction>> transactions = transactionServiceImpl.getIncomingTransactionsByAccountId(account.isPresent() ? account.get().getId() : null);
-
-        List<Transaction> incomingtransactionList = transactions.orElse(null);
-        List<TransactionDto> incomingTransactionDtoList = new ArrayList<>();
-
-        for (int i = 0; i < Objects.requireNonNull(incomingtransactionList).size(); i++) {
-            incomingTransactionDtoList.add(transactionConverter.convertTransactionEntityToTransactionDto(incomingtransactionList.get(i)));
+        try {
+            List<TransactionDto> incomingTransactionDtoList = transactionServiceImpl.getIncomingTransactionsByAccountId(appUserDni);
+            return ResponseEntity.ok(incomingTransactionDtoList);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ha ocurrido un error inesperado: " + e.getMessage());
         }
-
-
-        return ResponseEntity.status(HttpStatus.OK).body(
-                !incomingTransactionDtoList.isEmpty() ? incomingTransactionDtoList : ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    @PostMapping("/issue")
+    @PostMapping("/issue/transaction")
     public ResponseEntity<?> issueTransaction(@AuthenticationPrincipal String appUserDni, @RequestBody IssueTransactionDto issueTransactionDto) {
 
         Optional<AppUser> appUser = appUserServiceImpl.findAppUserByDni(appUserDni);
@@ -82,6 +54,19 @@ public class TransactionController {
             if (transaction != null) {
                 return ResponseEntity.status(HttpStatus.CREATED).body("Transferencia realizada con éxito");
             }
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se ha podido realizar la operación");
+    }
+
+    @PostMapping("/issue/bizum")
+    public ResponseEntity<?> issueBizum(@AuthenticationPrincipal String appUserDni, @RequestBody BizumDto bizumDto) {
+
+        Optional<AppUser> appUser = appUserServiceImpl.findAppUserByDni(appUserDni);
+
+        if (appUser.isPresent()) {
+            transactionServiceImpl.issueBizum(appUser.get(), bizumDto);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body("Bizum realizado con éxito");
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se ha podido realizar la operación");
     }
