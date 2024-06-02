@@ -36,7 +36,7 @@ public class DicaroBankApp implements CommandLineRunner {
                     .dni("12345678A")
                     .name("Juan")
                     .surname("Pérez")
-                    .phone("98765432")
+                    .phone("654987321")
                     .email("juan@example.com")
                     .password(passwordEncoder.encode("user1"))
                     .build();
@@ -46,7 +46,7 @@ public class DicaroBankApp implements CommandLineRunner {
                     .dni("98765432B")
                     .name("María")
                     .surname("García")
-                    .phone("65432198")
+                    .phone("654321898")
                     .email("maria@example.com")
                     .password(passwordEncoder.encode("user2"))
                     .build();
@@ -56,7 +56,7 @@ public class DicaroBankApp implements CommandLineRunner {
                     .dni("45678901C")
                     .name("Pedro")
                     .surname("López")
-                    .phone("36985214")
+                    .phone("741852963")
                     .email("pedro@example.com")
                     .password(passwordEncoder.encode("user3"))
                     .build();
@@ -66,7 +66,7 @@ public class DicaroBankApp implements CommandLineRunner {
                     .dni("21098765D")
                     .name("Ana")
                     .surname("Rodríguez")
-                    .phone("25814736")
+                    .phone("693582471")
                     .email("ana@example.com")
                     .password(passwordEncoder.encode("user4"))
                     .build();
@@ -76,7 +76,7 @@ public class DicaroBankApp implements CommandLineRunner {
                     .dni("54321098E")
                     .name("Laura")
                     .surname("Martínez")
-                    .phone("14725836")
+                    .phone("687412359")
                     .email("laura@example.com")
                     .password(passwordEncoder.encode("user5"))
                     .build();
