@@ -6,6 +6,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class TransactionConverter {
 
+    /**
+     * Convert Transaction Entity to Transaction DTO
+     * @param transaction the transaction entity to convert
+     * @return the transaction dto
+     */
     public TransactionDto convertTransactionEntityToTransactionDto(Transaction transaction){
         return TransactionDto.builder()
                 .transactionDate(transaction.getTransactionDate())

@@ -26,9 +26,10 @@ public class AppUserServiceImpl implements AppUserService {
     private final PasswordEncoder passwordEncoder;
 
     /**
-     * Method to find an app user by its dni in the database and return it.
-     *
-     * @return Optional<appUser>
+     * Find appUser by dni in the database and return it. If the user does not exist, it will throw an exception with a 404 status.
+     * @param dni the dni of the appUser to find in the database.
+     * @return Optional<AppUser> the appUser found or an empty Optional if the appUser does not exist.
+     * @throws ResponseStatusException if the user does not exist
      */
     @Override
     public Optional<AppUser> findAppUserByDni(String dni) {
@@ -40,10 +41,10 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     /**
-     * Method to create a new app user by passing a SingUpAppUserDto model in the database and return it.
-     *
-     * @param singUpAppUserDto the singed up app user
-     * @return appUser
+     * Method to create an app user in the database when the user signs up. If the user already exists, it will throw an exception with a 400 status.
+     * @param singUpAppUserDto the dto to create the app user.
+     * @return the created app user.
+     * @throws ResponseStatusException if the user already exists or if there was a problem creating the app user.
      */
     @Override
     public AppUser singUpAppUser(SingUpAppUserDto singUpAppUserDto) {
@@ -66,7 +67,9 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     /**
-     * Method to delete an app user by its dni in the database when the user is authenticated.
+     * Delete an app user from the database by its dni. If the user does not exist, it will throw an exception with a 404 status.
+     * @param dniAppUserAuth the dni of the app user to delete.
+     * @throws ResponseStatusException if the user does not exist
      */
     @Override
     public void deleteAppUser(String dniAppUserAuth) {

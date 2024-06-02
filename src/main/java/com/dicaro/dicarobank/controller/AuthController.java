@@ -1,6 +1,5 @@
 package com.dicaro.dicarobank.controller;
 
-import com.dicaro.dicarobank.dto.appUser.AppUserConverter;
 import com.dicaro.dicarobank.dto.appUser.LogInRequestDto;
 import com.dicaro.dicarobank.dto.appUser.LogInResponseDto;
 import com.dicaro.dicarobank.dto.appUser.SingUpAppUserDto;
@@ -33,7 +32,6 @@ public class AuthController {
     private final AppUserServiceImpl appUserServiceImpl;
     private final AuthenticationManager authManager;
     private final JwtTokeProvider jwtTokenProvider;
-    private final AppUserConverter appUserConverter;
     private final AccountServiceImpl accountServiceImpl;
 
     /**
@@ -81,7 +79,4 @@ public class AuthController {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Ha ocurrido un error inesperado");
         }
     }
-
-    //Logout not implemented TODO
-
 }

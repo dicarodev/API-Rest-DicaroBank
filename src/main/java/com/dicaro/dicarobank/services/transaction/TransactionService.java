@@ -8,13 +8,12 @@ import com.dicaro.dicarobank.model.Transaction;
 
 import java.util.List;
 
+/**
+ * Interface for transaction service
+ */
 public interface TransactionService {
-
     List<TransactionDto> getOutgoingTransactionsByAccountId(String appUserDni);
-
     List<TransactionDto> getIncomingTransactionsByAccountId(String appUserDni);
-
     Transaction issueTransaction(AppUser appUser, IssueTransactionDto issueTransactionDto);
-
     void issueBizum(AppUser appUser, BizumDto bizumDto);
 }

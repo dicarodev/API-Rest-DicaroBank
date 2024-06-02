@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Controller for transaction
+ */
 @RestController
 @RequestMapping("/transaction")
 @RequiredArgsConstructor
@@ -23,6 +26,11 @@ public class TransactionController {
     private final TransactionServiceImpl transactionServiceImpl;
     private final AppUserServiceImpl appUserServiceImpl;
 
+    /**
+     * Obtains all outgoing transactions of an authenticated user by its dni
+     * @param appUserDni the dni of the authenticated user
+     * @return list of outgoing transactions
+     */
     @GetMapping("/outgoing")
     public ResponseEntity<?> getOutgoingTransactionsAuthUser(@AuthenticationPrincipal String appUserDni) {
         try {
@@ -33,6 +41,11 @@ public class TransactionController {
         }
     }
 
+    /**
+     * Obtains all incoming transactions of an authenticated user by its dni
+     * @param appUserDni the dni of the authenticated user
+     * @return list of incoming transactions
+     */
     @GetMapping("/incoming")
     public ResponseEntity<?> getIncomingTransactionsAuthUser(@AuthenticationPrincipal String appUserDni) {
         try {
@@ -43,6 +56,12 @@ public class TransactionController {
         }
     }
 
+    /**
+     * Issue a transaction to an app user
+     * @param appUserDni the dni of the authenticated user
+     * @param issueTransactionDto the dto of the transaction to be issued
+     * @return If the transaction was successful or not, with a message about it
+     */
     @PostMapping("/issue/transaction")
     public ResponseEntity<?> issueTransaction(@AuthenticationPrincipal String appUserDni, @RequestBody IssueTransactionDto issueTransactionDto) {
 
@@ -58,6 +77,12 @@ public class TransactionController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se ha podido realizar la operación");
     }
 
+    /**
+     * Issue a bizum
+     * @param appUserDni the dni of the authenticated user
+     * @param bizumDto the dto of the transaction to be issued
+     * @return If the transaction was successful or not, with a message about it
+     */
     @PostMapping("/issue/bizum")
     public ResponseEntity<?> issueBizum(@AuthenticationPrincipal String appUserDni, @RequestBody BizumDto bizumDto) {
 

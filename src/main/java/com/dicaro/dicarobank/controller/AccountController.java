@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+/**
+ * Controller for account
+ */
 @RestController
 @RequestMapping("/account")
 @RequiredArgsConstructor
@@ -18,6 +21,11 @@ public class AccountController {
 
     private final AccountServiceImpl accountServiceImpl;
 
+    /**
+     * Obtains the account of the authenticated user by its dni
+     * @param appUserDni the dni of the authenticated user
+     * @return accountDto the account of the authenticated user
+     */
     @GetMapping("/user")
     public ResponseEntity<?> getAuthUserAccount(@AuthenticationPrincipal String appUserDni) {
         try {

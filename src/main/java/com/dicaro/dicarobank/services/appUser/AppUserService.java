@@ -10,8 +10,6 @@ import java.util.Optional;
  */
 public interface AppUserService {
     Optional<AppUser> findAppUserByDni(String dni);
-
     AppUser singUpAppUser(SingUpAppUserDto singUpAppUserDto);
-
     void deleteAppUser(String appUserDniAuth);
 }
