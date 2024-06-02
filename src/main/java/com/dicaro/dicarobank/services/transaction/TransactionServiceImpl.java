@@ -100,7 +100,10 @@ public class TransactionServiceImpl implements TransactionService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cuenta destino no encontrada");
         }
 
-        if (originAccountOpt.isPresent() && issueTransactionDto.getAmount() > 0) {
+        if (originAccountOpt.isPresent()
+                && (!originAccountOpt.get().getAccountNumber().equals(issueTransactionDto.getDestinyAccountNumber()))
+                && issueTransactionDto.getAmount() > 0) {
+
             Account originAccount = originAccountOpt.get();
             Account destinyAccount = destinyAccountOpt.get();
             double amount = issueTransactionDto.getAmount();
