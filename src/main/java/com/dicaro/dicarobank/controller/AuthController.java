@@ -42,13 +42,9 @@ public class AuthController {
      */
     @PostMapping("/singup")
     public ResponseEntity<?> singUpAppUser(@RequestBody SingUpAppUserDto singUpAppUserDto) {
-        try {
-            AppUser appUser = appUserServiceImpl.singUpAppUser(singUpAppUserDto);
-            accountServiceImpl.createNewAccount(appUser);
-            return ResponseEntity.status(HttpStatus.CREATED).build();
-        } catch (ResponseStatusException ex) {
-            return ResponseEntity.status(ex.getStatusCode()).body(ex.getReason());
-        }
+        AppUser appUser = appUserServiceImpl.singUpAppUser(singUpAppUserDto);
+        accountServiceImpl.createNewAccount(appUser);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     /**
