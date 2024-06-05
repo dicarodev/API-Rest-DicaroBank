@@ -2,6 +2,7 @@ package com.dicaro.dicarobank;
 
 import com.dicaro.dicarobank.model.Account;
 import com.dicaro.dicarobank.model.AppUser;
+import com.dicaro.dicarobank.model.AppUserAuthorization;
 import com.dicaro.dicarobank.repository.AccountRepository;
 import com.dicaro.dicarobank.repository.AppUserRepository;
 import com.dicaro.dicarobank.repository.TransactionRepository;
@@ -11,6 +12,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.stream.Stream;
 
 @SpringBootApplication
 @EnableJpaAuditing
@@ -33,52 +36,57 @@ public class DicaroBankApp implements CommandLineRunner {
 
             // Generate 5 AppUsers
             AppUser user1 = AppUser.builder()
-                    .dni("12345678A")
+                    .dni("23456789D")
                     .name("Juan")
                     .surname("Pérez")
                     .phone("654987321")
                     .email("juan@example.com")
                     .password(passwordEncoder.encode("user1"))
+                    .authorities(Stream.of(AppUserAuthorization.USER).toList())
                     .build();
             appUserRepository.save(user1);
 
             AppUser user2 = AppUser.builder()
-                    .dni("98765432B")
+                    .dni("98765432M")
                     .name("María")
                     .surname("García")
                     .phone("654321898")
                     .email("maria@example.com")
                     .password(passwordEncoder.encode("user2"))
+                    .authorities(Stream.of(AppUserAuthorization.USER).toList())
                     .build();
             appUserRepository.save(user2);
 
             AppUser user3 = AppUser.builder()
-                    .dni("45678901C")
+                    .dni("45678901G")
                     .name("Pedro")
                     .surname("López")
                     .phone("741852963")
                     .email("pedro@example.com")
                     .password(passwordEncoder.encode("user3"))
+                    .authorities(Stream.of(AppUserAuthorization.USER).toList())
                     .build();
             appUserRepository.save(user3);
 
             AppUser user4 = AppUser.builder()
-                    .dni("21098765D")
+                    .dni("21098765Z")
                     .name("Ana")
                     .surname("Rodríguez")
                     .phone("693582471")
                     .email("ana@example.com")
                     .password(passwordEncoder.encode("user4"))
+                    .authorities(Stream.of(AppUserAuthorization.USER).toList())
                     .build();
             appUserRepository.save(user4);
 
             AppUser user5 = AppUser.builder()
-                    .dni("54321098E")
+                    .dni("54321098C")
                     .name("Laura")
                     .surname("Martínez")
                     .phone("687412359")
                     .email("laura@example.com")
                     .password(passwordEncoder.encode("user5"))
+                    .authorities(Stream.of(AppUserAuthorization.USER).toList())
                     .build();
             appUserRepository.save(user5);
 
