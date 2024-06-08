@@ -92,32 +92,33 @@ public class DicaroBankApp implements CommandLineRunner {
                     .build();
             appUserRepository.save(user5);
 
+            // Generate 5 Accounts
             Account account1 = new Account();
-            account1.setBalance(2500); // Saldo inicial
+            account1.setBalance(2500);
             account1.setAppUser(user1);
             accountRepository.save(account1);
 
             Account account2 = new Account();
-            account2.setBalance(1000); // Saldo inicial
+            account2.setBalance(1000);
             account2.setAppUser(user2);
             accountRepository.save(account2);
 
             Account account3 = new Account();
-            account3.setBalance(800); // Saldo inicial
+            account3.setBalance(800);
             account3.setAppUser(user3);
             accountRepository.save(account3);
 
             Account account4 = new Account();
-            account4.setBalance(36000); // Saldo inicial
+            account4.setBalance(36000);
             account4.setAppUser(user4);
             accountRepository.save(account4);
 
             Account account5 = new Account();
-            account5.setBalance(13000); // Saldo inicial
+            account5.setBalance(13000);
             account5.setAppUser(user5);
             accountRepository.save(account5);
 
-            // Crear transacciones
+            // Generate 20 Transactions
             Random random = new Random();
             for (int i = 0; i < 5; i++) {
                 createIncomingTransaction(account1, account2, random);
@@ -137,6 +138,8 @@ public class DicaroBankApp implements CommandLineRunner {
             System.out.println("Database already populated");
         }
     }
+
+    // Helper methods to create transactions between accounts and save them in the database
     private void createIncomingTransaction(Account originAccount, Account destinyAccount, Random random) {
         double amount = 50 + (500 - 50) * random.nextDouble();
         String[] incomingDetails = {
@@ -172,7 +175,6 @@ public class DicaroBankApp implements CommandLineRunner {
                 .build();
         transactionRepository.save(transaction);
     }
-
     private void createOutgoingTransaction(Account originAccount, Account destinyAccount, Random random) {
         double amount = 50 + (500 - 50) * random.nextDouble();
         String[] outgoingDetails = {
