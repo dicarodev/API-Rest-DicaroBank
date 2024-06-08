@@ -119,33 +119,86 @@ public class DicaroBankApp implements CommandLineRunner {
 
             // Crear transacciones
             Random random = new Random();
-            for (int i = 0; i < 10; i++) {
-                createRandomTransaction(account1, account2, random);
-                createRandomTransaction(account2, account3, random);
-                createRandomTransaction(account3, account4, random);
-                createRandomTransaction(account4, account5, random);
-                createRandomTransaction(account5, account1, random);
+            for (int i = 0; i < 5; i++) {
+                createIncomingTransaction(account1, account2, random);
+                createIncomingTransaction(account2, account3, random);
+                createIncomingTransaction(account3, account4, random);
+                createIncomingTransaction(account4, account5, random);
+                createIncomingTransaction(account5, account1, random);
+
+                createOutgoingTransaction(account1, account2, random);
+                createOutgoingTransaction(account2, account3, random);
+                createOutgoingTransaction(account3, account4, random);
+                createOutgoingTransaction(account4, account5, random);
+                createOutgoingTransaction(account5, account1, random);
             }
 
         } else {
             System.out.println("Database already populated");
         }
     }
-    private void createRandomTransaction(Account originAccount, Account destinyAccount, Random random) {
+    private void createIncomingTransaction(Account originAccount, Account destinyAccount, Random random) {
         double amount = 50 + (500 - 50) * random.nextDouble();
-        String[] details = {
+        String[] incomingDetails = {
+                "Depósito",
+                "Transferencia recibida",
+                "Reembolso",
+                "Pago recibido",
+                "Inversión recibida",
+                "Cobro de servicios",
+                "Venta de productos",
+                "Premio",
+                "Intereses",
+                "Pago de clientes",
+                "Regalo recibido",
+                "Bono",
+                "Devolución de impuestos",
+                "Remesa familiar",
+                "Herencia",
+                "Lotería ganada",
+                "Ingreso por freelance",
+                "Venta de acciones",
+                "Reembolso por devolución",
+                "Incentivo de empresa"
+        };
+
+        String detail = incomingDetails[random.nextInt(incomingDetails.length)];
+
+        Transaction transaction = Transaction.builder()
+                .amount(amount)
+                .detail(detail)
+                .originAccount(destinyAccount)
+                .destinyAccount(originAccount)
+                .build();
+        transactionRepository.save(transaction);
+    }
+
+    private void createOutgoingTransaction(Account originAccount, Account destinyAccount, Random random) {
+        double amount = 50 + (500 - 50) * random.nextDouble();
+        String[] outgoingDetails = {
                 "Pago de servicios",
                 "Compra en supermercado",
                 "Pago de alquiler",
                 "Transferencia entre cuentas",
                 "Compra online",
                 "Pago de tarjeta de crédito",
-                "Reembolso",
-                "Transferencia recibida",
                 "Gastos varios",
-                "Depósito"
+                "Suscripción",
+                "Donación",
+                "Multa",
+                "Compra de ropa",
+                "Gastos médicos",
+                "Pago de impuestos",
+                "Mantenimiento del coche",
+                "Pago de facturas",
+                "Entretenimiento",
+                "Cena en restaurante",
+                "Viaje",
+                "Educación",
+                "Regalo"
         };
-        String detail = details[random.nextInt(details.length)];
+
+        String detail = outgoingDetails[random.nextInt(outgoingDetails.length)];
 
         Transaction transaction = Transaction.builder()
                 .amount(amount)
@@ -153,8 +206,6 @@ public class DicaroBankApp implements CommandLineRunner {
                 .originAccount(originAccount)
                 .destinyAccount(destinyAccount)
                 .build();
-
         transactionRepository.save(transaction);
     }
-
 }
