@@ -3,6 +3,7 @@ package com.dicaro.dicarobank;
 import com.dicaro.dicarobank.model.Account;
 import com.dicaro.dicarobank.model.AppUser;
 import com.dicaro.dicarobank.model.AppUserAuthorization;
+import com.dicaro.dicarobank.model.Transaction;
 import com.dicaro.dicarobank.repository.AccountRepository;
 import com.dicaro.dicarobank.repository.AppUserRepository;
 import com.dicaro.dicarobank.repository.TransactionRepository;
@@ -13,6 +14,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Random;
 import java.util.stream.Stream;
 
 @SpringBootApplication
@@ -115,67 +117,44 @@ public class DicaroBankApp implements CommandLineRunner {
             account5.setAppUser(user5);
             accountRepository.save(account5);
 
-            /*// Creación de 10 Transactions para account1
-            List<Transaction> transactions1 = new ArrayList<>();
-            for (int i = 1; i <= 10; i++) {
-                Transaction transaction = new Transaction();
-                transaction.setAmount(Math.floor(Math.random() * 10000)); // Monto aleatorio entre 0 y 500
-                transaction.setDetail("Transaction " + i);
-                transaction.setOriginAccount(account1);
-                transaction.setDestinyAccount(account3);
-                transactions1.add(transaction);
+            // Crear transacciones
+            Random random = new Random();
+            for (int i = 0; i < 10; i++) {
+                createRandomTransaction(account1, account2, random);
+                createRandomTransaction(account2, account3, random);
+                createRandomTransaction(account3, account4, random);
+                createRandomTransaction(account4, account5, random);
+                createRandomTransaction(account5, account1, random);
             }
-            transactionRepository.saveAll(transactions1);
 
-            // Creación de 10 Transactions para account2
-            List<Transaction> transactions2 = new ArrayList<>();
-            for (int i = 1; i <= 10; i++) {
-                Transaction transaction = new Transaction();
-                transaction.setAmount(Math.floor(Math.random() * 10000)); // Monto aleatorio entre 0 y 500
-                transaction.setDetail("Transaction " + i);
-                transaction.setOriginAccount(account2);
-                transaction.setDestinyAccount(account1);
-                transactions2.add(transaction);
-            }
-            transactionRepository.saveAll(transactions2);
-
-            // Creación de 10 Transactions para account3
-            List<Transaction> transactions3 = new ArrayList<>();
-            for (int i = 1; i <= 10; i++) {
-                Transaction transaction = new Transaction();
-                transaction.setAmount(Math.floor(Math.random() * 10000)); // Monto aleatorio entre 0 y 500
-                transaction.setDetail("Transaction " + i);
-                transaction.setOriginAccount(account3);
-                transaction.setDestinyAccount(account2);
-                transactions3.add(transaction);
-            }
-            transactionRepository.saveAll(transactions3);
-
-            // Creación de 10 Transactions para account4
-            List<Transaction> transactions4 = new ArrayList<>();
-            for (int i = 1; i <= 10; i++) {
-                Transaction transaction = new Transaction();
-                transaction.setAmount(Math.floor(Math.random() * 10000)); // Monto aleatorio entre 0 y 500
-                transaction.setDetail("Transaction " + i);
-                transaction.setOriginAccount(account4);
-                transaction.setDestinyAccount(account1);
-                transactions4.add(transaction);
-            }
-            transactionRepository.saveAll(transactions4);
-
-            // Creación de 10 Transactions para account5
-            List<Transaction> transactions5 = new ArrayList<>();
-            for (int i = 1; i <= 10; i++) {
-                Transaction transaction = new Transaction();
-                transaction.setAmount(Math.floor(Math.random() * 10000)); // Monto aleatorio entre 0 y 500
-                transaction.setDetail("Transaction " + i);
-                transaction.setOriginAccount(account5);
-                transaction.setDestinyAccount(account4);
-                transactions5.add(transaction);
-            }
-            transactionRepository.saveAll(transactions5);*/
         } else {
             System.out.println("Database already populated");
         }
     }
+    private void createRandomTransaction(Account originAccount, Account destinyAccount, Random random) {
+        double amount = 50 + (500 - 50) * random.nextDouble();
+        String[] details = {
+                "Pago de servicios",
+                "Compra en supermercado",
+                "Pago de alquiler",
+                "Transferencia entre cuentas",
+                "Compra online",
+                "Pago de tarjeta de crédito",
+                "Reembolso",
+                "Transferencia recibida",
+                "Gastos varios",
+                "Depósito"
+        };
+        String detail = details[random.nextInt(details.length)];
+
+        Transaction transaction = Transaction.builder()
+                .amount(amount)
+                .detail(detail)
+                .originAccount(originAccount)
+                .destinyAccount(destinyAccount)
+                .build();
+
+        transactionRepository.save(transaction);
+    }
+
 }
