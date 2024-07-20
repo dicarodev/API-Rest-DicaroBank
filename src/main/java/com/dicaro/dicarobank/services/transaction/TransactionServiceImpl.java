@@ -47,7 +47,8 @@ public class TransactionServiceImpl implements TransactionService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No se ha encontrado la cuenta"));
 
         // Retrieve all transactions for the account or an empty list if not found
-        List<Transaction> transactions = transactionRepository.findTransactionsByOriginAccountIdOrderByTransactionDate(account.getId()).orElse(Collections.emptyList());
+        List<Transaction> transactions = transactionRepository.findTransactionsByOriginAccountIdOrderByTransactionDate(account.getId())
+                .orElse(Collections.emptyList());
 
         // Convert transaction to DTO
         return transactions.stream()

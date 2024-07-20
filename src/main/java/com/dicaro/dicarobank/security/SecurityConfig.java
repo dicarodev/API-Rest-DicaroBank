@@ -54,15 +54,6 @@ public class SecurityConfig {
         http.httpBasic(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable);
 
-        /*http.cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(request -> {
-            CorsConfiguration configuration = new CorsConfiguration();
-            configuration.setAllowedOrigins(List.of("*"));
-            configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
-            configuration.setAllowedHeaders(List.of("*"));
-            configuration.setAllowCredentials(true);
-            return configuration;
-        }));*/
-
         // Configure the endpoints
         http.authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll()
